@@ -31,4 +31,4 @@ build/
 .vscode/
 
 ### GMail API ###
-.json
+*.json
