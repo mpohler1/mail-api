@@ -1,36 +1,32 @@
 package com.masonpohler.api.mail;
 
+import com.masonpohler.api.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 class MailController {
     private static final String DESTINATION_EMAIL_ADDRESS = System.getenv("DESTINATION_EMAIL_ADDRESS");
+    private static final String AUTOMATED_MESSAGE_BODY = System.getenv("AUTOMATED_MESSAGE_BODY");
 
-    private JavaMailSender mailSender;
+    private MailService service;
 
     @Autowired
-    MailController(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
+    MailController(MailService service) {
+        this.service = service;
     }
 
     @CrossOrigin("*")
     @PostMapping("/mail/send")
     @ResponseStatus(value = HttpStatus.OK)
     void sendMail(@RequestBody Mail mail) {
-        SimpleMailMessage messageToDestination = new SimpleMailMessage();
-        messageToDestination.setTo(DESTINATION_EMAIL_ADDRESS);
-        messageToDestination.setSubject(mail.getSubject());
-        messageToDestination.setText("The message below is from " + mail.getFrom() + "\n" + mail.getBody());
-        mailSender.send(messageToDestination);
-
-        SimpleMailMessage messageToUser = new SimpleMailMessage();
-        messageToUser.setTo(mail.getFrom());
-        messageToUser.setSubject("Message Received");
-        messageToUser.setText("");
-        mailSender.send(messageToUser);
+        try {
+            String destinationMessageBody = "The following message is from " + mail.getFrom() + "\n\n" + mail.getBody();
+            service.sendMail(DESTINATION_EMAIL_ADDRESS, mail.getSubject(), destinationMessageBody);
+            service.sendMail(mail.getFrom(), "Message Received", AUTOMATED_MESSAGE_BODY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
