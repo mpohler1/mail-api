@@ -27,35 +27,35 @@ class JavaMailServiceTest {
     }
 
     @Test
-    void send_mail_throws_mail_authentication_exception_when_mail_authentication_exception_is_thrown_in_java_mail_sender() {
+    void send_mail_throws_mail_service_send_exception_when_mail_authentication_exception_is_thrown_in_java_mail_sender() {
         doThrow(MailAuthenticationException.class)
                 .when(mockedMailSender).send(any(SimpleMailMessage.class));
 
-        assertThrows(MailAuthenticationException.class, () -> service.sendMail("", "", ""));
+        assertThrows(MailServiceSendException.class, () -> service.sendMail("", "", ""));
     }
 
     @Test
-    void send_mail_throws_mail_parse_exception_when_mail_parse_exception_is_thrown_in_java_mail_sender() {
+    void send_mail_throws_mail_service_parse_exception_when_mail_parse_exception_is_thrown_in_java_mail_sender() {
         doThrow(MailParseException.class)
                 .when(mockedMailSender).send(any(SimpleMailMessage.class));
 
-        assertThrows(MailParseException.class, () -> service.sendMail("", "", ""));
+        assertThrows(MailServiceParseException.class, () -> service.sendMail("", "", ""));
     }
 
     @Test
-    void send_mail_throws_mail_preparation_exception_when_mail_preparation_exception_is_thrown_in_java_mail_sender() {
+    void send_mail_throws_mail_service_send_exception_when_mail_preparation_exception_is_thrown_in_java_mail_sender() {
         doThrow(MailPreparationException.class)
                 .when(mockedMailSender).send(any(SimpleMailMessage.class));
 
-        assertThrows(MailPreparationException.class, () -> service.sendMail("", "", ""));
+        assertThrows(MailServiceSendException.class, () -> service.sendMail("", "", ""));
     }
 
     @Test
-    void send_mail_throws_mail_send_exception_when_mail_send_exception_is_thrown_in_java_mail_sender() {
+    void send_mail_throws_mail_service_send_exception_when_mail_send_exception_is_thrown_in_java_mail_sender() {
         doThrow(MailSendException.class)
                 .when(mockedMailSender).send(any(SimpleMailMessage.class));
 
-        assertThrows(MailSendException.class, () -> service.sendMail("", "", ""));
+        assertThrows(MailServiceSendException.class, () -> service.sendMail("", "", ""));
     }
 
     @Test

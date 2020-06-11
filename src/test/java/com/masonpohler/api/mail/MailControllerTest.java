@@ -1,6 +1,8 @@
 package com.masonpohler.api.mail;
 
 import com.masonpohler.api.service.MailService;
+import com.masonpohler.api.service.MailServiceParseException;
+import com.masonpohler.api.service.MailServiceSendException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -8,17 +10,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailAuthenticationException;
-import org.springframework.mail.MailParseException;
-import org.springframework.mail.MailPreparationException;
-import org.springframework.mail.MailSendException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 
 
-class MailModelControllerTest {
+class MailControllerTest {
 
     @Mock
     private MailService mockedMailService;
@@ -32,24 +30,8 @@ class MailModelControllerTest {
     }
 
     @Test
-    void send_mail_returns_internal_server_error_when_mail_auth_exception_is_caught() {
-        doThrow(MailAuthenticationException.class)
-                .when(mockedMailService).sendMail(
-                        any(String.class),
-                        any(String.class),
-                        any(String.class)
-                );
-
-        MailModel dummyMail = makeDummyMailModel();
-
-        ResponseEntity expectedResponse = new ResponseEntity<>(MailController.AUTH_FAILURE_RESPONSE_TEXT, HttpStatus.INTERNAL_SERVER_ERROR);
-        ResponseEntity actualResponse = controller.sendMail(dummyMail);
-        assertEquals(expectedResponse, actualResponse);
-    }
-
-    @Test
-    void send_mail_returns_bad_request_when_mail_parse_exception_is_caught() {
-        doThrow(MailParseException.class)
+    void send_mail_returns_bad_request_when_mail_service_parse_exception_is_caught() {
+        doThrow(MailServiceParseException.class)
                 .when(mockedMailService).sendMail(
                         any(String.class),
                         any(String.class),
@@ -64,24 +46,8 @@ class MailModelControllerTest {
     }
 
     @Test
-    void send_mail_returns_internal_server_error_when_mail_preparation_exception_is_caught() {
-        doThrow(MailPreparationException.class)
-                .when(mockedMailService).sendMail(
-                any(String.class),
-                any(String.class),
-                any(String.class)
-        );
-
-        MailModel dummyMail = makeDummyMailModel();
-
-        ResponseEntity expectedResponse = new ResponseEntity<>(MailController.PREPARATION_FAILURE_RESPONSE_TEXT, HttpStatus.INTERNAL_SERVER_ERROR);
-        ResponseEntity actualResponse = controller.sendMail(dummyMail);
-        assertEquals(expectedResponse, actualResponse);
-    }
-
-    @Test
-    void send_mail_returns_internal_server_error_when_mail_send_exception_is_caught() {
-        doThrow(MailSendException.class)
+    void send_mail_returns_internal_server_error_when_mail_service_send_exception_is_caught() {
+        doThrow(MailServiceSendException.class)
                 .when(mockedMailService).sendMail(
                 any(String.class),
                 any(String.class),
