@@ -3,17 +3,13 @@ package com.masonpohler.api.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.*;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service("javaMailService")
 public class JavaMailService implements MailService {
 
-    private JavaMailSender mailSender;
-
     @Autowired
-    JavaMailService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
+    private JavaMailSender mailSender;
 
     @Override
     public void sendMail(String to, String subject, String body) throws MailServiceException {

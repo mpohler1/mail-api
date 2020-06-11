@@ -4,6 +4,7 @@ import com.masonpohler.api.service.MailService;
 import com.masonpohler.api.service.MailServiceParseException;
 import com.masonpohler.api.service.MailServiceSendException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +24,9 @@ class MailController {
     private static final String DESTINATION_MESSAGE_HEADER = "The following message is from ";
     private static final String AUTOMATED_MESSAGE_SUBJECT = "Message Received";
 
-    private MailService service;
-
     @Autowired
-    MailController(MailService service) {
-        this.service = service;
-    }
+    @Qualifier("sendGridMailService")
+    private MailService service;
 
     @CrossOrigin("https://www.masonpohler.com")
     @PostMapping("/mail/send")

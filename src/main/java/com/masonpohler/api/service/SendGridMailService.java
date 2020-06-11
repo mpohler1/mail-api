@@ -5,23 +5,20 @@ import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.SendGrid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-@Component
+@Service("sendGridMailService")
 public class SendGridMailService implements MailService {
 
     private static final String MAIL_ENDPOINT = "mail/send";
 
+    @Autowired
     private SendGrid sendGrid;
-    private SendGridMailStringFactory mailStringFactory;
 
     @Autowired
-    SendGridMailService(SendGrid sendGrid, SendGridMailStringFactory mailStringFactory) {
-        this.sendGrid = sendGrid;
-        this.mailStringFactory = mailStringFactory;
-    }
+    private SendGridMailStringFactory mailStringFactory;
 
     @Override
     public void sendMail(String to, String subject, String body) throws MailServiceException {
