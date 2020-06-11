@@ -17,11 +17,11 @@ class MailController {
     // replace("\\n", "\n") is used to convert any newlines that may be included in env variables.
     private static final String DESTINATION_EMAIL_ADDRESS = System.getenv("DESTINATION_EMAIL_ADDRESS");
     private static final String AUTOMATED_MESSAGE_BODY = System.getenv("AUTOMATED_MESSAGE_BODY").replace("\\n", "\n");
-    private static final String SUCCESS_RESPONSE_TEXT = System.getenv("SUCCESS_RESPONSE_TEXT").replace("\\n", "\n");
-    private static final String AUTH_FAILURE_RESPONSE_TEXT = System.getenv("AUTH_FAILURE_RESPONSE_TEXT").replace("\\n", "\n");
-    private static final String PARSE_FAILURE_RESPONSE_TEXT = System.getenv("PARSE_FAILURE_RESPONSE_TEXT").replace("\\n", "\n");
-    private static final String PREPARATION_FAILURE_RESPONSE_TEXT = System.getenv("PREPARATION_FAILURE_RESPONSE_TEXT").replace("\\n", "\n");
-    private static final String SEND_FAILURE_RESPONSE_TEXT = System.getenv("SEND_FAILURE_RESPONSE_TEXT").replace("\\n", "\n");
+    static final String SUCCESS_RESPONSE_TEXT = System.getenv("SUCCESS_RESPONSE_TEXT").replace("\\n", "\n");
+    static final String AUTH_FAILURE_RESPONSE_TEXT = System.getenv("AUTH_FAILURE_RESPONSE_TEXT").replace("\\n", "\n");
+    static final String PARSE_FAILURE_RESPONSE_TEXT = System.getenv("PARSE_FAILURE_RESPONSE_TEXT").replace("\\n", "\n");
+    static final String PREPARATION_FAILURE_RESPONSE_TEXT = System.getenv("PREPARATION_FAILURE_RESPONSE_TEXT").replace("\\n", "\n");
+    static final String SEND_FAILURE_RESPONSE_TEXT = System.getenv("SEND_FAILURE_RESPONSE_TEXT").replace("\\n", "\n");
 
     private static final String DESTINATION_MESSAGE_HEADER = "The following message is from ";
     private static final String AUTOMATED_MESSAGE_SUBJECT = "Message Received";
