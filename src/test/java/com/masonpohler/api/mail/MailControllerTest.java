@@ -18,7 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 
 
-class MailControllerTest {
+class MailModelControllerTest {
 
     @Mock
     private MailService mockedMailService;
@@ -40,7 +40,7 @@ class MailControllerTest {
                         any(String.class)
                 );
 
-        Mail dummyMail = makeDummyMail();
+        MailModel dummyMail = makeDummyMailModel();
 
         ResponseEntity expectedResponse = new ResponseEntity<>(MailController.AUTH_FAILURE_RESPONSE_TEXT, HttpStatus.INTERNAL_SERVER_ERROR);
         ResponseEntity actualResponse = controller.sendMail(dummyMail);
@@ -56,7 +56,7 @@ class MailControllerTest {
                         any(String.class)
         );
 
-        Mail dummyMail = makeDummyMail();
+        MailModel dummyMail = makeDummyMailModel();
 
         ResponseEntity expectedResponse = new ResponseEntity<>(MailController.PARSE_FAILURE_RESPONSE_TEXT, HttpStatus.BAD_REQUEST);
         ResponseEntity actualResponse = controller.sendMail(dummyMail);
@@ -72,7 +72,7 @@ class MailControllerTest {
                 any(String.class)
         );
 
-        Mail dummyMail = makeDummyMail();
+        MailModel dummyMail = makeDummyMailModel();
 
         ResponseEntity expectedResponse = new ResponseEntity<>(MailController.PREPARATION_FAILURE_RESPONSE_TEXT, HttpStatus.INTERNAL_SERVER_ERROR);
         ResponseEntity actualResponse = controller.sendMail(dummyMail);
@@ -88,7 +88,7 @@ class MailControllerTest {
                 any(String.class)
         );
 
-        Mail dummyMail = makeDummyMail();
+        MailModel dummyMail = makeDummyMailModel();
 
         ResponseEntity expectedResponse = new ResponseEntity<>(MailController.SEND_FAILURE_RESPONSE_TEXT, HttpStatus.INTERNAL_SERVER_ERROR);
         ResponseEntity actualResponse = controller.sendMail(dummyMail);
@@ -97,17 +97,17 @@ class MailControllerTest {
 
     @Test
     void send_mail_returns_ok_when_no_exception_is_thrown() {
-        Mail dummyMail = makeDummyMail();
+        MailModel dummyMail = makeDummyMailModel();
         ResponseEntity expectedResponse = new ResponseEntity<>(MailController.SUCCESS_RESPONSE_TEXT, HttpStatus.OK);
         ResponseEntity actualResponse = controller.sendMail(dummyMail);
         assertEquals(expectedResponse, actualResponse);
     }
 
-    private Mail makeDummyMail() {
-        Mail dummyMail = new Mail();
-        dummyMail.setFrom("nobody@example.com");
-        dummyMail.setSubject("Test");
-        dummyMail.setBody("This is mail that will be used for unit testing.");
-        return dummyMail;
+    private MailModel makeDummyMailModel() {
+        MailModel dummyMailModel = new MailModel();
+        dummyMailModel.setFrom("nobody@example.com");
+        dummyMailModel.setSubject("Test");
+        dummyMailModel.setBody("This is mail that will be used for unit testing.");
+        return dummyMailModel;
     }
 }
