@@ -99,8 +99,8 @@ class MailControllerTest {
     void send_mail_returns_ok_when_no_exception_is_thrown() {
         Mail dummyMail = makeDummyMail();
         ResponseEntity expectedResponse = new ResponseEntity<>(MailController.SUCCESS_RESPONSE_TEXT, HttpStatus.OK);
-        ResponseEntity acutalResponse = controller.sendMail(dummyMail);
-        assertEquals(expectedResponse, acutalResponse);
+        ResponseEntity actualResponse = controller.sendMail(dummyMail);
+        assertEquals(expectedResponse, actualResponse);
     }
 
     private Mail makeDummyMail() {
