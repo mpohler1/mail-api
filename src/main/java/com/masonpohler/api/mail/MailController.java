@@ -34,7 +34,7 @@ class MailController {
         this.service = service;
     }
 
-    @CrossOrigin("*")
+    @CrossOrigin("https://www.masonpohler.com")
     @PostMapping("/mail/send")
     ResponseEntity sendMail(@RequestBody Mail mail) {
         try {
