@@ -6,6 +6,7 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -13,10 +14,15 @@ import java.io.IOException;
 @Component
 public class SendGridMailService implements MailService {
 
-    private static final String API_KEY = System.getenv("SEND_GRID_API_KEY");
     private static final Email FROM_EMAIL = new Email(System.getenv("MAIL_USERNAME"));
-
     private static final String MAIL_ENDPOINT = "mail/send";
+
+    private SendGrid sendGrid;
+
+    @Autowired
+    SendGridMailService(SendGrid sendGrid) {
+        this.sendGrid = sendGrid;
+    }
 
     @Override
     public void sendMail(String to, String subject, String body) throws MailServiceException {
@@ -45,7 +51,6 @@ public class SendGridMailService implements MailService {
 
     private void sendRequest(Request request) throws MailServiceSendException {
         try {
-            SendGrid sendGrid = new SendGrid(API_KEY);
             sendGrid.api(request);
         } catch (IOException e) {
             throw new MailServiceSendException(e.getMessage());
