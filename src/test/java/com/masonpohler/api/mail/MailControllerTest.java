@@ -71,8 +71,8 @@ class MailControllerTest {
 
     private MailModel makeDummyMailModel() {
         MailModel dummyMailModel = new MailModel();
-        dummyMailModel.setFrom("nobody@example.com");
-        dummyMailModel.setSubject("Test");
+        dummyMailModel.setEmail("nobody@example.com");
+        dummyMailModel.setName("Nobody");
         dummyMailModel.setBody("This is mail that will be used for unit testing.");
         return dummyMailModel;
     }
