@@ -1,5 +1,6 @@
 package com.masonpohler.api.mail;
 
+import com.google.gson.Gson;
 import com.masonpohler.api.service.MailService;
 import com.masonpohler.api.service.MailServiceParseException;
 import com.masonpohler.api.service.MailServiceSendException;
@@ -17,6 +18,8 @@ import static org.mockito.Mockito.doThrow;
 
 
 class MailControllerTest {
+
+    private static final Gson gson = new Gson();
 
     @Mock
     private MailService mockedMailService;
@@ -40,7 +43,7 @@ class MailControllerTest {
 
         MailModel dummyMail = makeDummyMailModel();
 
-        ResponseEntity expectedResponse = new ResponseEntity<>(MailController.PARSE_FAILURE_RESPONSE_TEXT, HttpStatus.BAD_REQUEST);
+        ResponseEntity expectedResponse = new ResponseEntity<>(gson.toJson(MailController.PARSE_FAILURE_RESPONSE_TEXT), HttpStatus.BAD_REQUEST);
         ResponseEntity actualResponse = controller.sendMail(dummyMail);
         assertEquals(expectedResponse, actualResponse);
     }
@@ -56,7 +59,7 @@ class MailControllerTest {
 
         MailModel dummyMail = makeDummyMailModel();
 
-        ResponseEntity expectedResponse = new ResponseEntity<>(MailController.SEND_FAILURE_RESPONSE_TEXT, HttpStatus.INTERNAL_SERVER_ERROR);
+        ResponseEntity expectedResponse = new ResponseEntity<>(gson.toJson(MailController.SEND_FAILURE_RESPONSE_TEXT), HttpStatus.INTERNAL_SERVER_ERROR);
         ResponseEntity actualResponse = controller.sendMail(dummyMail);
         assertEquals(expectedResponse, actualResponse);
     }
@@ -64,15 +67,15 @@ class MailControllerTest {
     @Test
     void send_mail_returns_ok_when_no_exception_is_thrown() {
         MailModel dummyMail = makeDummyMailModel();
-        ResponseEntity expectedResponse = new ResponseEntity<>(MailController.SUCCESS_RESPONSE_TEXT, HttpStatus.OK);
+        ResponseEntity expectedResponse = new ResponseEntity<>(gson.toJson(MailController.SUCCESS_RESPONSE_TEXT), HttpStatus.OK);
         ResponseEntity actualResponse = controller.sendMail(dummyMail);
         assertEquals(expectedResponse, actualResponse);
     }
 
     private MailModel makeDummyMailModel() {
         MailModel dummyMailModel = new MailModel();
-        dummyMailModel.setFrom("nobody@example.com");
-        dummyMailModel.setSubject("Test");
+        dummyMailModel.setEmail("nobody@example.com");
+        dummyMailModel.setName("Nobody");
         dummyMailModel.setBody("This is mail that will be used for unit testing.");
         return dummyMailModel;
     }
