@@ -1,11 +1,13 @@
 package com.masonpohler.api.mail;
 
+import com.google.gson.Gson;
 import com.masonpohler.api.service.MailService;
 import com.masonpohler.api.service.MailServiceParseException;
 import com.masonpohler.api.service.MailServiceSendException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,23 +24,25 @@ class MailController {
     private static final String DESTINATION_MESSAGE_HEADER = "The following message is from ";
     private static final String DESTINATION_MESSAGE_SUBJECT = "Message From ";
 
+    private static final Gson gson = new Gson();
+
     @Autowired
     @Qualifier("sendGridMailService")
     private MailService service;
 
     @CrossOrigin("*")
-    @PostMapping("/mail/send")
-    ResponseEntity sendMail(@RequestBody MailModel mailModel) {
+    @PostMapping(value = "/mail/send", produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<String> sendMail(@RequestBody MailModel mailModel) {
         try {
             String destinationMessageBody = DESTINATION_MESSAGE_HEADER + mailModel.getName() + " at " + mailModel.getEmail() + "\n\n" + mailModel.getBody();
             service.sendMail(DESTINATION_EMAIL_ADDRESS, DESTINATION_MESSAGE_SUBJECT + mailModel.getName(), destinationMessageBody);
-            return new ResponseEntity<>(SUCCESS_RESPONSE_TEXT, HttpStatus.OK);
+            return new ResponseEntity<String>(gson.toJson(SUCCESS_RESPONSE_TEXT), HttpStatus.OK);
 
         } catch (MailServiceParseException e) {
-            return new ResponseEntity<>(PARSE_FAILURE_RESPONSE_TEXT, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>(gson.toJson(PARSE_FAILURE_RESPONSE_TEXT), HttpStatus.BAD_REQUEST);
 
         } catch (MailServiceSendException e) {
-            return new ResponseEntity<>(SEND_FAILURE_RESPONSE_TEXT, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<String>(gson.toJson(SEND_FAILURE_RESPONSE_TEXT), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
