@@ -30,7 +30,7 @@ class MailController {
     @Qualifier("sendGridMailService")
     private MailService service;
 
-    @CrossOrigin("*")
+    @CrossOrigin("https://www.masonpohler.com")
     @PostMapping(value = "/mail/send", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<String> sendMail(@RequestBody MailModel mailModel) {
         try {
